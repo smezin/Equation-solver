@@ -15,6 +15,7 @@ int extract_value_from_equation (char* , int, int);
 int find_edge(char*, int, int);
 int do_the_math(int, char, int);
 char* replace_subequation_with_result(char*, int, int, int);
+void return_in_parentheses (char *equation);
 
 
 int main(int argc, const char * argv[]) {
@@ -22,30 +23,49 @@ int main(int argc, const char * argv[]) {
        
         char *equation = get_equation();
         int result = solve_equation(equation);
-        
+        printf("\nResult %d\n",result);
+        return_in_parentheses(equation);
     }
     return 0;
 }
 
+int solve_it (char *equation)
+{
+    
+    
+    return 0;
+}
+
+void return_in_parentheses (char *equation)
+{
+    int to = 0;
+    int from = (int) strlen(equation);
+    
+    for (;equation[to] != ')' && to != from; to++);
+    for (;equation[from] != '(' && from !=0 ;from--);
+    
+    printf("\nlen: %d  from: %d,  to: %d\n",(int)strlen(equation), from, to);
+    
+}
+
+
 int solve_equation (char *equation)
 {
-    int result = 0;
     equation = calculate_operands(equation, '*','/');
     equation = calculate_operands(equation, '+','-');
-    
-    return result;
+    return atoi(equation);
 }
 
 char* get_equation ()
 {
     char input[1000];
     printf("Please enter an equation with no spaces\n");
-    scanf("%s", input);
-    u_long len = strlen(input)+1;
+    fgets(input, 1000, stdin);
+    int len = (int)strlen(input);
     char* equation = malloc(len*sizeof(char));
     for (int i=0; i<len; i++)
         equation[i]=input[i];
-    equation[len-1] = '\0';
+    equation[len-1] = '\0';                             //-1 because last char is always '\n'
     return equation;
 }
 
@@ -63,8 +83,8 @@ char* calculate_operands (char *equation, char op1, char op2)
             right_value = extract_value_from_equation(equation, index, YES);
             result = do_the_math(left_value, operator, right_value);
             
-            end = find_edge(equation, index, NO);
-            start = find_edge(equation, index, YES);
+            end = find_edge(equation, index, YES);
+            start = find_edge(equation, index, NO);
             equation = replace_subequation_with_result(equation, start, end, result);
             printf("%s\n", equation);
             index = 0;
@@ -76,8 +96,7 @@ char* calculate_operands (char *equation, char op1, char op2)
 
 char* replace_subequation_with_result (char* equation, int start, int end, int result)
 {
-    printf("\nstart%d  end%d\n", start, end);
-    u_long eq_len = strlen(equation);
+    int eq_len = (int)strlen(equation);
     int i;
     int result_len = !result?2:(floor(log10(abs(result))) + 2);
     
@@ -94,7 +113,6 @@ char* replace_subequation_with_result (char* equation, int start, int end, int r
         right_eq_part[i] = equation[end];
     right_eq_part [i] = '\0';
     
-
     equation = strcat(left_eq_part, result_as_string);
     equation = strcat(equation, right_eq_part);
     
@@ -103,9 +121,9 @@ char* replace_subequation_with_result (char* equation, int start, int end, int r
 
 int find_edge (char* equation, int index, int is_forward)
 {
-    int direction = is_forward?-1:1;
+    int direction = is_forward?1:-1;
     index+=direction;
-    if (!is_forward && equation[index] == '-')
+    if (is_forward && equation[index] == '-')                           //for unari -
         index++;
     for (;isdigit(equation[index]) && index>0 ;index+=direction);
    
@@ -146,9 +164,8 @@ int extract_value_from_equation (char* equation, int start, int is_forward)
     if (equation[start] == '-' && is_forward)
         index++;
     for (;isdigit(equation[index]) && index >= 0;index+=direction);
-    if (index == 0 && equation[0] == '-')
+    if (index == 0 && equation[0] == '-')                               //for unari -
         index = -1;
-    
     
     char *value =(char*) malloc ((abs(index-start)+2)*sizeof(char));
     
