@@ -33,8 +33,6 @@ int solve_equation (char *equation)
     equation = calculate_operands(equation, '*','/');
     equation = calculate_operands(equation, '+','-');
     
-    
-    
     return result;
 }
 
@@ -69,6 +67,7 @@ char* calculate_operands (char *equation, char op1, char op2)
             start = find_edge(equation, index, YES);
             equation = replace_subequation_with_result(equation, start, end, result);
             printf("%s\n", equation);
+            index = 0;
         }
         index++;
     }
@@ -85,7 +84,7 @@ char* replace_subequation_with_result (char* equation, int start, int end, int r
     char *result_as_string = (char*)malloc(result_len*sizeof(char));
     sprintf(result_as_string, "%d", result);
 
-    char *left_eq_part = (char*)malloc((start+1)*sizeof(char));
+    char *left_eq_part = (char*)malloc((eq_len+1)*sizeof(char));
     for (i = 0; i <= start && start != 0; i++)
         left_eq_part[i] = equation[i];
     left_eq_part[i] = '\0';
@@ -102,10 +101,12 @@ char* replace_subequation_with_result (char* equation, int start, int end, int r
     return equation;
 }
 
-int find_edge (char* equation, int index, int find_start)
+int find_edge (char* equation, int index, int is_forward)
 {
-    int direction = find_start?-1:1;
+    int direction = is_forward?-1:1;
     index+=direction;
+    if (!is_forward && equation[index] == '-')
+        index++;
     for (;isdigit(equation[index]) && index>0 ;index+=direction);
    
     return index;
@@ -141,25 +142,25 @@ int extract_value_from_equation (char* equation, int start, int is_forward)
     int direction = is_forward?1:-1;
     int index = start + direction;
     start += direction;
-        
+    
+    if (equation[start] == '-' && is_forward)
+        index++;
     for (;isdigit(equation[index]) && index >= 0;index+=direction);
     if (index == 0 && equation[0] == '-')
         index = -1;
+    
+    
     char *value =(char*) malloc ((abs(index-start)+2)*sizeof(char));
+    
+    int i,j;
     if (is_forward)
-    {
-        int i,j;
         for (i = start, j = 0; i < index; i++, j++)
             value[j] = equation[i];
-        value[j] = '\0';
-    }
-    else //extract backwards from start
-    {
-        int i,j;
-        for (i=index+1, j=0; i <= start; i++, j++)
+    else
+        for (i = index + 1, j = 0; i <= start; i++, j++)
             value[j] = equation[i];
-        value[j] = '\0';
-    }
+        
+    value[j] = '\0';
     return atoi(value);
 }
 
