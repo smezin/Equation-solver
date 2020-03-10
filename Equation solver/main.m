@@ -10,8 +10,8 @@
 
 int solve_equation (char*);
 char* get_equation (void);
-char* multiply_and_divide (char*);
-int extract_from_string (char* , int, int);
+char* calculate_operands (char*, char, char);
+int extract_value_from_equation (char* , int, int);
 int find_edge(char*, int, int);
 int do_the_math(int, char, int);
 char* replace_subequation_with_result(char*, int, int, int);
@@ -30,7 +30,8 @@ int main(int argc, const char * argv[]) {
 int solve_equation (char *equation)
 {
     int result = 0;
-    equation = multiply_and_divide(equation);
+    equation = calculate_operands(equation, '*','/');
+    equation = calculate_operands(equation, '+','-');
     
     
     
@@ -50,18 +51,18 @@ char* get_equation ()
     return equation;
 }
 
-char* multiply_and_divide (char *equation)
+char* calculate_operands (char *equation, char op1, char op2)
 {
     int left_value, right_value, result, start, end, index=0;
     char operator;
     
     while (equation[index] != '\0')
     {
-        if (equation[index] == '*' || equation[index] == '/')
+        if (equation[index] == op1 || equation[index] == op2)
         {
             operator = equation[index];
-            left_value = extract_from_string(equation, index, NO);
-            right_value = extract_from_string(equation, index, YES);
+            left_value = extract_value_from_equation(equation, index, NO);
+            right_value = extract_value_from_equation(equation, index, YES);
             result = do_the_math(left_value, operator, right_value);
             
             end = find_edge(equation, index, NO);
@@ -73,8 +74,6 @@ char* multiply_and_divide (char *equation)
     }
     return equation;
 }
-
-
 
 char* replace_subequation_with_result (char* equation, int start, int end, int result)
 {
@@ -91,13 +90,13 @@ char* replace_subequation_with_result (char* equation, int start, int end, int r
         left_eq_part[i] = equation[i];
     left_eq_part[i] = '\0';
     
-    char* right_eq_part = (char*)malloc((eq_len-end+1)*sizeof(char));
+    char* right_eq_part = (char*)malloc((eq_len-end + 2)*sizeof(char));
     for (i=0; end<eq_len; end++, i++)
         right_eq_part[i] = equation[end];
     right_eq_part [i] = '\0';
     
-   // if (start != 0)
-        equation = strcat(left_eq_part, result_as_string);
+
+    equation = strcat(left_eq_part, result_as_string);
     equation = strcat(equation, right_eq_part);
     
     return equation;
@@ -137,14 +136,15 @@ int do_the_math (int left, char operator, int right)
     return result;
 }
 
-int extract_from_string (char* equation, int start, int is_forward)
+int extract_value_from_equation (char* equation, int start, int is_forward)
 {
     int direction = is_forward?1:-1;
     int index = start + direction;
     start += direction;
         
     for (;isdigit(equation[index]) && index >= 0;index+=direction);
-    
+    if (index == 0 && equation[0] == '-')
+        index = -1;
     char *value =(char*) malloc ((abs(index-start)+2)*sizeof(char));
     if (is_forward)
     {
