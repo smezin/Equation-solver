@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E102D8CD2417FA6400775EF5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E102D8CC2417FA6400775EF5 /* main.m */; };
 		E13158922418FA26006E7BA7 /* utility_funcs.m in Sources */ = {isa = PBXBuildFile; fileRef = E13158912418FA26006E7BA7 /* utility_funcs.m */; };
+		E13158962418FF95006E7BA7 /* calculate_funcs.m in Sources */ = {isa = PBXBuildFile; fileRef = E13158952418FF95006E7BA7 /* calculate_funcs.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		E102D8CC2417FA6400775EF5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E13158912418FA26006E7BA7 /* utility_funcs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = utility_funcs.m; sourceTree = "<group>"; };
 		E13158932418FD9E006E7BA7 /* utility_funcs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility_funcs.h; sourceTree = "<group>"; };
+		E13158942418FF83006E7BA7 /* calculate_funcs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = calculate_funcs.h; sourceTree = "<group>"; };
+		E13158952418FF95006E7BA7 /* calculate_funcs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = calculate_funcs.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,8 @@
 				E102D8CC2417FA6400775EF5 /* main.m */,
 				E13158912418FA26006E7BA7 /* utility_funcs.m */,
 				E13158932418FD9E006E7BA7 /* utility_funcs.h */,
+				E13158942418FF83006E7BA7 /* calculate_funcs.h */,
+				E13158952418FF95006E7BA7 /* calculate_funcs.m */,
 			);
 			path = "Equation solver";
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13158962418FF95006E7BA7 /* calculate_funcs.m in Sources */,
 				E13158922418FA26006E7BA7 /* utility_funcs.m in Sources */,
 				E102D8CD2417FA6400775EF5 /* main.m in Sources */,
 			);
