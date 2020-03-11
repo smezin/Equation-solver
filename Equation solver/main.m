@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
         char *equation = get_equation();
         int result = solve_equation(equation);
         printf("\nResult %d\n",result);
-        return_in_parentheses(equation);
+     //   return_in_parentheses(equation);
     }
     return 0;
 }
@@ -71,7 +71,7 @@ char* get_equation ()
 
 char* calculate_operands (char *equation, char op1, char op2)
 {
-    int left_value, right_value, result, start, end, index=0;
+    int left_value, right_value, result, start, end, index=1;
     char operator;
     
     while (equation[index] != '\0')
@@ -97,26 +97,26 @@ char* calculate_operands (char *equation, char op1, char op2)
 char* replace_subequation_with_result (char* equation, int start, int end, int result)
 {
     int eq_len = (int)strlen(equation);
-    int i;
     int result_len = !result?2:(floor(log10(abs(result))) + 2);
-    
+    char *output_equation = (char*)malloc(eq_len*sizeof(char));
     char *result_as_string = (char*)malloc(result_len*sizeof(char));
     sprintf(result_as_string, "%d", result);
-
-    char *left_eq_part = (char*)malloc((eq_len+1)*sizeof(char));
-    for (i = 0; i <= start && start != 0; i++)
-        left_eq_part[i] = equation[i];
-    left_eq_part[i] = '\0';
     
-    char* right_eq_part = (char*)malloc((eq_len-end + 2)*sizeof(char));
-    for (i=0; end<eq_len; end++, i++)
-        right_eq_part[i] = equation[end];
-    right_eq_part [i] = '\0';
+    for (int i = 0; i < eq_len; i++)
+        output_equation[i]='\0';
     
-    equation = strcat(left_eq_part, result_as_string);
-    equation = strcat(equation, right_eq_part);
+    if (start != 0)
+    {
+        strncpy(output_equation, equation, start + 1);
+        strcat(output_equation, result_as_string);
+    }
+    else
+        strcpy(output_equation, result_as_string);
     
-    return equation;
+    if (eq_len != end)
+        strncat(output_equation, equation + end, eq_len-end);
+    
+    return output_equation;
 }
 
 int find_edge (char* equation, int index, int is_forward)
@@ -180,4 +180,3 @@ int extract_value_from_equation (char* equation, int start, int is_forward)
     value[j] = '\0';
     return atoi(value);
 }
-
