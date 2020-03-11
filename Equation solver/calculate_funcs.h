@@ -5,8 +5,8 @@
 #ifndef calculate_funcs_h
 #define calculate_funcs_h
 char*   calculate_operands (char *equation, char op1, char op2);
-int     extract_value_from_equation (char* equation, int start, BOOL is_forward);
-int     do_the_math (int left, char operator, int right);
+double  extract_value_from_equation (char* equation, int start, BOOL is_forward);
+double  do_the_math (double left, char operator, double right);
 int     find_edge (char* equation, int index, BOOL is_forward);
-char*   replace_subequation_with_result (char* equation, int start, int end, int result);
+char*   replace_subequation_with_result (char* equation, int start, int end, double result);
 #endif /* calculate_funcs_h */

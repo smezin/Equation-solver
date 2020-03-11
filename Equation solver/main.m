@@ -7,25 +7,26 @@
 #include "utility_funcs.h"
 #include "calculate_funcs.h"
 
-int solve_by_order (char*);
+double solve_by_order (char*);
 char* calculate_operands (char*, char, char);
-int solve_equation (char*);
+double solve_equation (char*);
 
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
        
         char *equation = get_equation();
-        int result = solve_equation(equation);
-        printf("\nResult: %d\n", result);
+        double result = solve_equation(equation);
+        printf("\nResult: %.2lf\n", result);
     }
     return 0;
 }
 
-int solve_equation (char *equation)
+double solve_equation (char *equation)
 {
     printf("\n%s\n", equation);
-    int open_index=-1, close_index=-1, result;
+    int open_index=-1, close_index=-1;
+    double result;
     if (!strchr(equation, '('))
         return solve_by_order(equation);
     else
@@ -42,9 +43,9 @@ int solve_equation (char *equation)
     }
 }
 
-int solve_by_order (char *equation)
+double solve_by_order (char *equation)
 {
     equation = calculate_operands(equation, '*','/');
     equation = calculate_operands(equation, '+','-');
-    return atoi(equation);
+    return strtod(equation, NULL);
 }
