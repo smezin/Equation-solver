@@ -15,7 +15,7 @@ int extract_value_from_equation (char* , int, int);
 int find_edge(char*, int, int);
 int do_the_math(int, char, int);
 char* replace_subequation_with_result(char*, int, int, int);
-char* return_in_parentheses (char*);
+void return_in_parentheses (char*);
 int solve_it (char*);
 
 
@@ -23,9 +23,7 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
        
         char *equation = get_equation();
-     //   int result = solve_equation(equation);
-     //   printf("\nResult %d\n",result);
-        printf("\n%s\n",return_in_parentheses(equation));
+        return_in_parentheses(equation);
     }
     return 0;
 }
@@ -35,21 +33,45 @@ int solve_it (char *equation)
     return 0;
 }
 
-char* return_in_parentheses (char *equation)
+int get_open_index (char *equation)
 {
+    int index = -1;
+    int eq_len = (int)strlen(equation);
+    for (int i = 0; i < eq_len; i++)
+    {
+        if (equation[i] == '(')
+            index = i;
+        if (equation[i] == ')')
+            return index;
+    }
+    return -1;
+}
+int get_closing_index (char *equation)
+{
+    int index = 0;
+    for (;equation[index] != ')'; index++);
+    return index;
+}
+
+
+void return_in_parentheses (char *equation)
+{
+    printf("\n%s\n", equation);
     int open_index=-1, close_index=-1, result;
     if (!strchr(equation, '('))
-        return NULL;
-    
-    open_index = (int)(strrchr(equation, '(') - equation);
-    close_index = (int)(strchr(equation, ')') - equation);
-    char *inner_equation = malloc((close_index-open_index+1)*sizeof(char));
-    strncpy(inner_equation, equation+open_index+1, close_index-open_index-1);
-    
-    result = solve_equation(inner_equation);
-    equation = replace_subequation_with_result(equation, open_index-1, close_index+1, result);
-  
-    return (strncpy(inner_equation, equation+open_index+1, close_index-open_index-1));
+        printf("\nresult %d\n",solve_equation(equation));
+    else
+    {
+        open_index = get_open_index(equation);
+        close_index = get_closing_index(equation);
+        char *inner_equation = malloc((close_index-open_index+1)*sizeof(char));
+        strncpy(inner_equation, equation+open_index+1, close_index-open_index-1);
+        
+        result = solve_equation(inner_equation);
+        equation = replace_subequation_with_result(equation, open_index-1, close_index+1, result);
+       
+        return_in_parentheses(equation);
+    }
 }
 
 
@@ -90,7 +112,7 @@ char* calculate_operands (char *equation, char op1, char op2)
             end = find_edge(equation, index, YES);
             start = find_edge(equation, index, NO);
             equation = replace_subequation_with_result(equation, start, end, result);
-            printf("%s\n", equation);
+            printf("\n%s\n", equation);
             index = 0;
         }
         index++;
