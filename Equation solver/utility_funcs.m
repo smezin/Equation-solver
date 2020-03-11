@@ -2,9 +2,6 @@
 //  utility_funcs.m
 //  Equation solver
 //
-//  Created by natali on 11/03/2020.
-//  Copyright © 2020 hyperActive. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 
@@ -21,11 +18,11 @@ char* get_equation ()
     return equation;
 }
 
-int get_open_index (char *equation)
+int get_open_index (char *equation)                     //get the innermost (
 {
     int index = -1;
-    int eq_len = (int)strlen(equation);
-    for (int i = 0; i < eq_len; i++)
+    int equation_len = (int)strlen(equation);
+    for (int i = 0; i < equation_len; i++)
     {
         if (equation[i] == '(')
             index = i;

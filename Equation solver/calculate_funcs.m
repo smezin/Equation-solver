@@ -4,6 +4,8 @@
 
 #import <Foundation/Foundation.h>
 #import "calculate_funcs.h"
+#define GO_LEFT NO
+#define GO_RIGHT YES
 
 char* calculate_operands (char *equation, char op1, char op2)
 {
@@ -15,11 +17,11 @@ char* calculate_operands (char *equation, char op1, char op2)
         if (equation[index] == op1 || equation[index] == op2)
         {
             operator = equation[index];
-            left_value = extract_value_from_equation(equation, index, NO);
-            right_value = extract_value_from_equation(equation, index, YES);
+            left_value = extract_value_from_equation(equation, index, GO_LEFT);
+            right_value = extract_value_from_equation(equation, index, GO_RIGHT);
             result = do_the_math(left_value, operator, right_value);
-            end = find_edge(equation, index, YES);
-            start = find_edge(equation, index, NO);
+            end = find_edge(equation, index, GO_RIGHT);
+            start = find_edge(equation, index, GO_LEFT);
             equation = replace_subequation_with_result(equation, start, end, result);
             printf("\n%s\n", equation);
             index = 0;
@@ -29,7 +31,7 @@ char* calculate_operands (char *equation, char op1, char op2)
     return equation;
 }
 
-int extract_value_from_equation (char* equation, int start, int is_forward)
+int extract_value_from_equation (char* equation, int start, BOOL is_forward)
 {
     int direction = is_forward?1:-1;
     int index = start + direction;
@@ -76,9 +78,7 @@ int do_the_math (int left, char operator, int right)
     return result;
 }
 
-
-
-int find_edge (char* equation, int index, int is_forward)
+int find_edge (char* equation, int index, BOOL is_forward)
 {
     int direction = is_forward?1:-1;
     index+=direction;
@@ -91,13 +91,13 @@ int find_edge (char* equation, int index, int is_forward)
 
 char* replace_subequation_with_result (char* equation, int start, int end, int result)
 {
-    int eq_len = (int)strlen(equation);
+    int equation_len = (int)strlen(equation);
     int result_len = !result?2:(floor(log10(abs(result))) + 2);
-    char *output_equation = (char*)malloc(eq_len*sizeof(char));
+    char *output_equation = (char*)malloc(equation_len*sizeof(char));
     char *result_as_string = (char*)malloc(result_len*sizeof(char));
     sprintf(result_as_string, "%d", result);
     
-    for (int i = 0; i < eq_len; i++)
+    for (int i = 0; i < equation_len; i++)
         output_equation[i]='\0';
     
     if (start != 0)
@@ -108,8 +108,8 @@ char* replace_subequation_with_result (char* equation, int start, int end, int r
     else
         strcpy(output_equation, result_as_string);
     
-    if (eq_len != end)
-        strncat(output_equation, equation + end, eq_len-end);
+    if (equation_len != end)
+        strncat(output_equation, equation + end, equation_len-end);
     
     return output_equation;
 }
