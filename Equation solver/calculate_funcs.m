@@ -68,9 +68,15 @@ double do_the_math (double left, char operator, double right)
             break;
         case '*':
             result = left * right;
+            result *= 100;
+            result = round(result);
+            result /= 100;
             break;
         case '/':
             result = left / right;
+            result *= 100;
+            result = round(result);
+            result /= 100;
             break;
         default:
             
@@ -96,11 +102,7 @@ char* replace_subequation_with_result (char* equation, int start, int end, doubl
     int result_len = (result < 1 && result > -1)?5:(floor(log10(abs((int)round(result)))) + 5);
     char *output_equation = (char*)malloc(equation_len*sizeof(char));
     char *result_as_string = (char*)malloc(result_len*sizeof(char));
-    
-    result *= 100;
-    result = round(result);
-    result /= 100;
-    
+
     sprintf(result_as_string, "%.2lf", result);
     
     for (int i = 0; i < equation_len; i++)

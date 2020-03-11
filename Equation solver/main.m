@@ -11,7 +11,6 @@ double solve_by_order (char*);
 char* calculate_operands (char*, char, char);
 double solve_equation (char*);
 
-
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
        
@@ -35,7 +34,6 @@ double solve_equation (char *equation)
         close_index = get_closing_index(equation);
         char *inner_equation = malloc((close_index-open_index+1)*sizeof(char));
         strncpy(inner_equation, equation+open_index+1, close_index-open_index-1);
-        
         result = solve_by_order(inner_equation);
         equation = replace_subequation_with_result(equation, open_index-1, close_index+1, result);
        
