@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#include "utility_funcs.h"
 
 int solve_equation (char*);
 char* get_equation (void);
@@ -16,7 +17,6 @@ int find_edge(char*, int, int);
 int do_the_math(int, char, int);
 char* replace_subequation_with_result(char*, int, int, int);
 void return_in_parentheses (char*);
-int solve_it (char*);
 
 
 int main(int argc, const char * argv[]) {
@@ -27,32 +27,6 @@ int main(int argc, const char * argv[]) {
     }
     return 0;
 }
-
-int solve_it (char *equation)
-{
-    return 0;
-}
-
-int get_open_index (char *equation)
-{
-    int index = -1;
-    int eq_len = (int)strlen(equation);
-    for (int i = 0; i < eq_len; i++)
-    {
-        if (equation[i] == '(')
-            index = i;
-        if (equation[i] == ')')
-            return index;
-    }
-    return -1;
-}
-int get_closing_index (char *equation)
-{
-    int index = 0;
-    for (;equation[index] != ')'; index++);
-    return index;
-}
-
 
 void return_in_parentheses (char *equation)
 {
