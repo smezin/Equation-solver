@@ -1,7 +1,5 @@
-//
 //  main.m
 //  Equation solver
-//
 
 #import <Foundation/Foundation.h>
 #include "utility_funcs.h"

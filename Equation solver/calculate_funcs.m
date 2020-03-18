@@ -1,4 +1,3 @@
-//
 //  calculate_funcs.m
 //  Equation solver
 

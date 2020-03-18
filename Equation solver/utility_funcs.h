@@ -1,4 +1,3 @@
-//
 //  utility_funcs.h
 //  Equation solver
 
