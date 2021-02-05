@@ -1,5 +1,6 @@
 # Equation-solver
 command line application.
+This applications solves math equations containing +-*/ and (). App applies recursive design, solving braced expressions inside out
 NOTE:
 1. No input checks. input MUST be in valid format.
 2. valid input may contain equation with the 4 basic arithmetic operation (+-*/)
